@@ -1,0 +1,66 @@
+<div class="container">
+  <h2>Office Space Booking</h2>
+  <form (ngSubmit)="searchSpaces()" [formGroup]="bookingForm">
+    <div class="form-group">
+      <label for="officeBuilding">Office Building:</label>
+      <select
+        id="officeBuilding"
+        formControlName="officeBuilding"
+        class="form-control"
+        (change)="onBuildingChange()"
+      >
+        <option *ngFor="let building of officeBuildings" [value]="building.id">
+          {{ building.name }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="floor">Floor:</label>
+      <select id="floor" formControlName="floor" class="form-control">
+        <option *ngFor="let floor of floors" [value]="floor.id">
+          {{ floor.name }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="spaceType">Space Type:</label>
+      <select id="spaceType" formControlName="spaceType" class="form-control">
+        <option value="cubicles">Cubicles</option>
+        <option value="officeSeats">Office Seats</option>
+        <option value="meetingRooms">Meeting Rooms</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Search Spaces</button>
+  </form>
+</div>
+
+<!-- Display available seats table -->
+<div *ngIf="showSpaces">
+  <h3>Available Spaces</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Seat Name</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let seat of availableSeats; let i = index">
+        <td>{{ seatNames[i] }}</td>
+        <td>{{ seat.status }}</td>
+        <td>
+          <button
+            class="btn"
+            [class.btn-primary]="isSeatAvailable(seat)"
+            [class.btn-success]="isSeatAvailable(seat)"
+            [disabled]="!isSeatAvailable(seat)"
+            (click)="bookSeat(seat.id)"
+          >
+            Book
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
