@@ -1,0 +1,27 @@
+// styles.scss
+
+// Custom navbar styles
+.navbar {
+  background-color: #f8f9fa; // Change background color
+  font-family: "Roboto", sans-serif; // Use a Google Font or any other preferred font family
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Add a subtle shadow
+}
+
+.navbar-brand {
+  font-weight: bold; // Make the brand text bold
+}
+
+.navbar-nav .nav-link {
+  color: #343a40; // Change text color
+  font-weight: 500; // Medium font weight
+  transition: color 0.3s ease; // Smooth transition for color change
+}
+
+.navbar-nav .nav-link.active {
+  color: #007bff; // Change active link color
+}
+
+// Hover effect for navbar links
+.navbar-nav .nav-link:hover {
+  color: #0056b3; // Change link color on hover
+}
