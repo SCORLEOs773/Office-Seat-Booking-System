@@ -19,8 +19,23 @@
             >Bookings</a
           >
         </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active"
+            >Dashboard</a
+          >
+        </li>
       </ul>
-      <ul class="navbar-nav ml-auto" style="transform: translateX(900px)">
+      <div
+        class="clock px-2 py-1"
+        style="
+          border: 2px dotted black;
+          border-radius: 20px;
+          transform: translateX(650px);
+        "
+      >
+        <app-clock></app-clock>
+      </div>
+      <ul class="navbar-nav ml-auto" style="transform: translateX(670px)">
         <li class="nav-item">
           <a class="nav-link" routerLink="/login" routerLinkActive="active"
             >Login</a

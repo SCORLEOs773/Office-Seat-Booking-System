@@ -1,63 +1,100 @@
 <div class="container">
   <h2>Office Space Booking</h2>
-  <form (ngSubmit)="searchSpaces()" [formGroup]="bookingForm">
+  <form [formGroup]="bookingForm" (ngSubmit)="searchSpaces()">
     <div class="form-group">
       <label for="officeBuilding">Office Building:</label>
       <select
         id="officeBuilding"
         formControlName="officeBuilding"
         class="form-control"
-        (change)="onBuildingChange()"
+        (change)="onBuildingChange($event.target.value)"
       >
-        <option *ngFor="let building of officeBuildings" [value]="building.id">
-          {{ building.name }}
+        <option value="" disabled selected>Select Office Building</option>
+        <option
+          *ngFor="let building of officeBuildings"
+          [value]="building.buildingId"
+        >
+          {{ building.buildingName }}
         </option>
       </select>
     </div>
     <div class="form-group">
       <label for="floor">Floor:</label>
-      <select id="floor" formControlName="floor" class="form-control">
-        <option *ngFor="let floor of floors" [value]="floor.id">
-          {{ floor.name }}
-        </option>
+      <select
+        id="floor"
+        formControlName="floor"
+        class="form-control"
+        (change)="onFloorChange($event.target.value)"
+        [disabled]="!bookingForm.get('officeBuilding')?.value"
+      >
+        <option value="" disabled selected>Select Floor</option>
+        <ng-container *ngIf="bookingForm.get('officeBuilding')?.value">
+          <option
+            *ngFor="let floor of getSelectedBuilding()?.floors"
+            [value]="floor.floorId"
+          >
+            {{ floor.floorName }}
+          </option>
+        </ng-container>
       </select>
     </div>
     <div class="form-group">
       <label for="spaceType">Space Type:</label>
-      <select id="spaceType" formControlName="spaceType" class="form-control">
-        <option value="cubicles">Cubicles</option>
-        <option value="officeSeats">Office Seats</option>
-        <option value="meetingRooms">Meeting Rooms</option>
+      <select
+        id="spaceType"
+        formControlName="spaceType"
+        class="form-control"
+        [disabled]="!bookingForm.get('floor')?.value"
+      >
+        <option value="" disabled selected>Select Space Type</option>
+        <ng-container *ngIf="bookingForm.get('floor')?.value">
+          <ng-container
+            *ngFor="let spaceType of getSelectedFloor()?.spaces | keyvalue"
+          >
+            <option
+              *ngIf="spaceType.key !== 'meetingRooms'"
+              [value]="spaceType.key"
+            >
+              {{ spaceType.key }}
+            </option>
+          </ng-container>
+        </ng-container>
       </select>
     </div>
     <button type="submit" class="btn btn-primary">Search Spaces</button>
   </form>
 </div>
 
-<!-- Display available seats table -->
 <div *ngIf="showSpaces">
   <h3>Available Spaces</h3>
   <table class="table">
     <thead>
       <tr>
-        <th>Seat Name</th>
+        <th>Name</th>
         <th>Status</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let seat of availableSeats; let i = index">
-        <td>{{ seatNames[i] }}</td>
-        <td>{{ seat.status }}</td>
+      <tr *ngFor="let space of availableSpaces">
+        <td>{{ space.name }}</td>
+        <td>{{ space.status }}</td>
         <td>
           <button
-            class="btn"
-            [class.btn-primary]="isSeatAvailable(seat)"
-            [class.btn-success]="isSeatAvailable(seat)"
-            [disabled]="!isSeatAvailable(seat)"
-            (click)="bookSeat(seat.id)"
+            class="btn btn-primary"
+            (click)="bookSpace(space)"
+            [disabled]="space.status !== 'Available'"
           >
             Book
+          </button>
+        </td>
+        <td>
+          <button
+            *ngIf="space.booked"
+            class="btn btn-warning"
+            (click)="swapSpace(space)"
+          >
+            Swap
           </button>
         </td>
       </tr>

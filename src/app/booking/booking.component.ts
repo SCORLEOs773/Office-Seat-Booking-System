@@ -1,104 +1,206 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { BookingService } from './booking.service';
+
+interface OfficeBuilding {
+  buildingId: number;
+  buildingName: string;
+  floors: Floor[];
+}
+
+interface Floor {
+  floorId: number;
+  floorName: string;
+  spaces: {
+    [key: string]: Space[];
+  };
+}
+
+interface Space {
+  seatId?: number;
+  cubicleId?: number;
+  roomId?: number;
+  bookingId?: number;
+  name: string;
+  status: string;
+  capacity?: number;
+  booked?: boolean; // New property to track booking status
+}
 
 @Component({
   selector: 'app-booking',
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.css'],
 })
-export class BookingComponent implements OnInit {
+export class BookingComponent {
   bookingForm: FormGroup;
-  officeBuildings: any[]; // Assuming this will be fetched from backend
-  floors: any[]; // Assuming this will be fetched from backend
-  showSpaces: boolean = false;
-  availableSeats: any[] = [];
-  seatNames: any[] = [];
+  officeBuildings: OfficeBuilding[] = [];
+  showSpaces = false;
+  availableSpaces: Space[] = [];
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
-
-  ngOnInit(): void {
+  constructor(
+    private formBuilder: FormBuilder,
+    private bookingService: BookingService
+  ) {
     this.bookingForm = this.formBuilder.group({
-      officeBuilding: ['', Validators.required],
-      floor: ['', Validators.required],
-      spaceType: ['', Validators.required],
+      officeBuilding: [''],
+      floor: [''],
+      spaceType: [''],
     });
 
-    // Fetch office building and floor data from backend
-    this.fetchOfficeBuildings();
-    this.fetchFloors();
+    // Initialize office buildings
+    this.initializeOfficeBuildings();
   }
 
-  fetchOfficeBuildings() {
-    // Call your backend API to fetch office building data
-    // Example: this.http.get('/api/office-buildings').subscribe((data: any[]) => {
-    //   this.officeBuildings = data;
-    // });
-    // Mock data
-    this.officeBuildings = [
-      { id: 1, name: 'MIS HQ' },
-      { id: 2, name: 'MIS Tech Hub' },
-    ];
+  initializeOfficeBuildings() {
+    const jsonData = {
+      officeBuildings: [
+        {
+          buildingId: 1,
+          buildingName: 'MIS HQ',
+          floors: [
+            {
+              floorId: 1,
+              floorName: 'Floor 1',
+              spaces: {
+                officeSeats: [
+                  { seatId: 1, name: 'Seat 1', status: 'Available' },
+                  { seatId: 2, name: 'Seat 2', status: 'Occupied' },
+                ],
+                cubicles: [
+                  { cubicleId: 1, name: 'Cubicle 1', status: 'Occupied' },
+                  { cubicleId: 2, name: 'Cubicle 2', status: 'Available' },
+                ],
+              },
+            },
+            {
+              floorId: 2,
+              floorName: 'Floor 2',
+              spaces: {
+                officeSeats: [
+                  { seatId: 1, name: 'Seat 1', status: 'Available' },
+                  { seatId: 2, name: 'Seat 2', status: 'Occupied' },
+                ],
+                cubicles: [
+                  { cubicleId: 1, name: 'Cubicle 1', status: 'Occupied' },
+                  { cubicleId: 2, name: 'Cubicle 2', status: 'Available' },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    };
+
+    this.officeBuildings = jsonData.officeBuildings;
   }
 
-  fetchFloors() {
-    // Call your backend API to fetch floor data
-    // Example: this.http.get('/api/floors').subscribe((data: any[]) => {
-    //   this.floors = data;
-    // });
-    // Mock data
-    this.floors = [
-      { id: 1, name: 'Floor 1' },
-      { id: 2, name: 'Floor 2' },
-      { id: 3, name: 'Floor 3' },
-    ];
+  onBuildingChange(buildingId: number) {
+    const selectedBuilding = this.officeBuildings.find(
+      (b) => b.buildingId === +buildingId
+    );
+    this.bookingForm.get('floor')?.setValue('');
+    this.bookingForm.get('spaceType')?.setValue('');
+    if (selectedBuilding) {
+      this.bookingForm.get('floor')?.enable();
+    } else {
+      this.bookingForm.get('floor')?.disable();
+    }
   }
 
-  onBuildingChange() {
-    // Implement logic to fetch floors based on selected office building
+  onFloorChange(floorId: number) {
+    const selectedBuildingId = this.bookingForm.get('officeBuilding')?.value;
+    const selectedBuilding = this.officeBuildings.find(
+      (b) => b.buildingId === +selectedBuildingId
+    );
+    if (selectedBuilding) {
+      const selectedFloor = selectedBuilding.floors.find(
+        (f) => f.floorId === +floorId
+      );
+      if (selectedFloor) {
+        const spaceTypes = Object.keys(selectedFloor.spaces);
+        this.bookingForm.get('spaceType')?.setValue('');
+        if (spaceTypes.length > 0) {
+          this.bookingForm.get('spaceType')?.enable();
+        } else {
+          this.bookingForm.get('spaceType')?.disable();
+        }
+      }
+    }
   }
 
   searchSpaces() {
-    if (this.bookingForm.valid) {
-      // Call your backend API to search for available spaces based on form inputs
-      // Example: this.http.post('/api/search-spaces', this.bookingForm.value).subscribe((data: any[]) => {
-      //   this.availableSeats = data;
-      //   this.generateSeatNames();
-      //   this.showSpaces = true;
-      // });
-      // Mock data
-      this.availableSeats = [
-        { id: 1, status: 'Available' },
-        { id: 2, status: 'Occupied' },
-        { id: 3, status: 'Available' },
-      ];
-      this.generateSeatNames();
-      this.showSpaces = true; // Display available spaces
-    } else {
-      console.log('Invalid form');
+    const selectedBuildingId = this.bookingForm.get('officeBuilding')?.value;
+    const selectedBuilding = this.officeBuildings.find(
+      (b) => b.buildingId === +selectedBuildingId
+    );
+    if (selectedBuilding) {
+      const selectedFloorId = this.bookingForm.get('floor')?.value;
+      const selectedFloor = selectedBuilding.floors.find(
+        (f) => f.floorId === +selectedFloorId
+      );
+      if (selectedFloor) {
+        const selectedSpaceType = this.bookingForm.get('spaceType')?.value;
+        if (selectedSpaceType) {
+          this.availableSpaces = selectedFloor.spaces[selectedSpaceType];
+          this.showSpaces = true;
+        }
+      }
     }
   }
 
-  generateSeatNames() {
-    const spaceType = this.bookingForm.value.spaceType;
-    if (spaceType === 'officeSeats') {
-      this.seatNames = ['Seat 1', 'Seat 2', 'Seat 3']; // Generate seat names for office seats
-    } else if (spaceType === 'cubicles') {
-      this.seatNames = ['Cubicle A1', 'Cubicle A2', 'Cubicle A3']; // Generate seat names for cubicles
-    } else if (spaceType === 'meetingRooms') {
-      this.seatNames = ['Henry Ford', 'Nikola Tesla', 'Thomas Edison']; // Generate meeting room names
-    }
+  bookSpace(space: Space) {
+    // Logic to book the selected space
+    this.bookingService
+      .bookSpace(space.seatId || space.cubicleId || space.roomId)
+      .subscribe(
+        () => {
+          // Handle success, e.g., show a success message
+          console.log('Booking request sent successfully');
+          space.status = 'Booked';
+          // space.booked = true;
+        },
+        (error) => {
+          // Handle error, e.g., show an error mesxsage
+          console.error('Error booking space:', error);
+        }
+      );
+    space.booked = true;
+  }
+  swapSpace(space: Space) {
+    // Logic to swap the selected space with another space
+    // Assuming you have a form or mechanism to gather swap details
+    const swapRequest = {
+      spaceId: space.seatId || space.cubicleId || space.roomId,
+      // Add other swap details here, e.g., userId, targetSpaceId, etc.
+    };
+
+    // Assuming the sendSwapRequest method expects a request object
+    this.bookingService.sendSwapRequest(swapRequest).subscribe(
+      () => {
+        // Handle success, e.g., show a success message
+        console.log('Swap request sent successfully');
+      },
+      (error) => {
+        // Handle error, e.g., show an error message
+        console.error('Error sending swap request:', error);
+      }
+    );
   }
 
-  bookSeat(seatId: number) {
-    // Implement logic to handle booking the selected seat
-    console.log('Booked seat:', seatId);
-    // Example: this.http.post('/api/book-seat', seatId).subscribe(response => {
-    //   console.log('Seat booked successfully:', response);
-    // });
+  getSelectedBuilding() {
+    const selectedBuildingId = this.bookingForm.get('officeBuilding')?.value;
+    return this.officeBuildings.find(
+      (b) => b.buildingId === +selectedBuildingId
+    );
   }
 
-  isSeatAvailable(seat: any): boolean {
-    return seat.status === 'Available';
+  getSelectedFloor() {
+    const selectedBuildingId = this.bookingForm.get('officeBuilding')?.value;
+    const selectedBuilding = this.officeBuildings.find(
+      (b) => b.buildingId === +selectedBuildingId
+    );
+    const selectedFloorId = this.bookingForm.get('floor')?.value;
+    return selectedBuilding?.floors.find((f) => f.floorId === +selectedFloorId);
   }
 }

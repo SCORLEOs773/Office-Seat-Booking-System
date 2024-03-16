@@ -10,6 +10,8 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BookingComponent } from './booking/booking.component';
+import { ClockComponent } from './clock/clock.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { BookingComponent } from './booking/booking.component';
     HomepageComponent,
     NavbarComponent,
     BookingComponent,
+    ClockComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
