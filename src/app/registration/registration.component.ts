@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from '../../enviorment';
 
 @Component({
   selector: 'app-registration',
@@ -8,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./registration.component.css'],
 })
 export class RegistrationComponent {
+  apiUrl = environment.apiUrl;
   userForm: FormGroup;
   user = {
     user_fullname: '',
@@ -47,7 +49,7 @@ export class RegistrationComponent {
     console.log('OTP sent to:', this.userForm.value.user_email);
     // Call your backend API to send OTP
     this.http
-      .post<any>('your-backend-url/send-otp', {
+      .post<any>(`${this.apiUrl}/verify-email`, {
         user_email: this.userForm.value.user_email,
       })
       .subscribe(
@@ -70,19 +72,17 @@ export class RegistrationComponent {
     delete userData.confirmPassword;
 
     // Call your backend API to register the user
-    this.http
-      .post<any>('http://192.168.103.150:8080/register', userData)
-      .subscribe(
-        (response) => {
-          console.log('User registered successfully');
-          // Reset form after successful registration
-          this.resetForm();
-        },
-        (error) => {
-          console.error('Failed to register user');
-          // Handle error appropriately
-        }
-      );
+    this.http.post<any>(`${this.apiUrl}/register`, userData).subscribe(
+      (response) => {
+        console.log('User registered successfully');
+        // Reset form after successful registration
+        this.resetForm();
+      },
+      (error) => {
+        console.error('Failed to register user');
+        // Handle error appropriately
+      }
+    );
     this.resetForm();
   }
 

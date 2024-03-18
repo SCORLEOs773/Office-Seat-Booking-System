@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from '../../enviorment';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+  apiUrl = environment.apiUrl;
   loginForm: FormGroup;
 
   constructor(
@@ -21,8 +23,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      user_email: ['test@test', [Validators.required, Validators.email]],
-      user_password: ['1234', Validators.required],
+      user_email: ['s@s.com', [Validators.required, Validators.email]],
+      user_password: ['tesT@123', Validators.required],
     });
   }
 
@@ -33,7 +35,7 @@ export class LoginComponent implements OnInit {
 
       // Assuming your backend endpoint for login is '/api/login'
       this.http
-        .post<any>('http://192.168.103.150:8080/login', {
+        .post<any>(`${this.apiUrl}/login`, {
           user_email,
           user_password,
         })
