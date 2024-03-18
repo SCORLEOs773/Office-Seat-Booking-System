@@ -1,103 +1,141 @@
-<div class="container">
-  <h2>Office Space Booking</h2>
-  <form [formGroup]="bookingForm" (ngSubmit)="searchSpaces()">
-    <div class="form-group">
-      <label for="officeBuilding">Office Building:</label>
-      <select
-        id="officeBuilding"
-        formControlName="officeBuilding"
-        class="form-control"
-        (change)="onBuildingChange($event.target.value)"
-      >
-        <option value="" disabled selected>Select Office Building</option>
-        <option
-          *ngFor="let building of officeBuildings"
-          [value]="building.buildingId"
-        >
-          {{ building.buildingName }}
-        </option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="floor">Floor:</label>
-      <select
-        id="floor"
-        formControlName="floor"
-        class="form-control"
-        (change)="onFloorChange($event.target.value)"
-        [disabled]="!bookingForm.get('officeBuilding')?.value"
-      >
-        <option value="" disabled selected>Select Floor</option>
-        <ng-container *ngIf="bookingForm.get('officeBuilding')?.value">
-          <option
-            *ngFor="let floor of getSelectedBuilding()?.floors"
-            [value]="floor.floorId"
+<div class="container mt-4">
+  <div class="d-flex justify-content-between">
+    <!-- Form Section -->
+    <div
+      class="form-section p-4 shadow bg-white rounded"
+      style="width: 30vw; transform: translateX(-200px)"
+    >
+      <h2 class="mb-4">Office Space Booking</h2>
+      <form [formGroup]="bookingForm" (ngSubmit)="searchSpaces()">
+        <div class="form-group">
+          <label for="officeBuilding">Office Building:</label>
+          <select
+            id="officeBuilding"
+            formControlName="officeBuilding"
+            class="form-control"
+            (change)="onBuildingChange($event.target.value)"
           >
-            {{ floor.floorName }}
-          </option>
-        </ng-container>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="spaceType">Space Type:</label>
-      <select
-        id="spaceType"
-        formControlName="spaceType"
-        class="form-control"
-        [disabled]="!bookingForm.get('floor')?.value"
-      >
-        <option value="" disabled selected>Select Space Type</option>
-        <ng-container *ngIf="bookingForm.get('floor')?.value">
-          <ng-container
-            *ngFor="let spaceType of getSelectedFloor()?.spaces | keyvalue"
-          >
+            <option value="" disabled selected>Select Office Building</option>
             <option
-              *ngIf="spaceType.key !== 'meetingRooms'"
-              [value]="spaceType.key"
+              *ngFor="let building of officeBuildings"
+              [value]="building.buildingId"
             >
-              {{ spaceType.key }}
+              {{ building.buildingName }}
             </option>
-          </ng-container>
-        </ng-container>
-      </select>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="floor">Floor:</label>
+          <select
+            id="floor"
+            formControlName="floor"
+            class="form-control"
+            (change)="onFloorChange($event.target.value)"
+            [disabled]="!bookingForm.get('officeBuilding')?.value"
+          >
+            <option value="" disabled selected>Select Floor</option>
+            <option
+              *ngFor="let floor of getSelectedBuilding()?.floors"
+              [value]="floor.floorId"
+            >
+              {{ floor.floorName }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="spaceType">Space Type:</label>
+          <select
+            id="spaceType"
+            formControlName="spaceType"
+            class="form-control"
+            [disabled]="!bookingForm.get('floor')?.value"
+          >
+            <option value="" disabled selected>Select Space Type</option>
+            <ng-container *ngIf="bookingForm.get('floor')?.value">
+              <ng-container
+                *ngFor="let spaceType of getSelectedFloor()?.spaces | keyvalue"
+              >
+                <option
+                  *ngIf="spaceType.key !== 'meetingRooms'"
+                  [value]="spaceType.key"
+                >
+                  {{ spaceType.key }}
+                </option>
+              </ng-container>
+            </ng-container>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="startDate">Start Date:</label>
+          <input
+            type="date"
+            id="startDate"
+            formControlName="startDate"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label for="startTime">Start Time:</label>
+          <input
+            type="time"
+            id="startTime"
+            formControlName="startTime"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label for="duration">Duration (hours):</label>
+          <input
+            type="number"
+            id="duration"
+            formControlName="duration"
+            class="form-control"
+          />
+        </div>
+        <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary">Search Spaces</button>
+        </div>
+      </form>
     </div>
-    <button type="submit" class="btn btn-primary">Search Spaces</button>
-  </form>
-</div>
 
-<div *ngIf="showSpaces">
-  <h3>Available Spaces</h3>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let space of availableSpaces">
-        <td>{{ space.name }}</td>
-        <td>{{ space.status }}</td>
-        <td>
-          <button
-            class="btn btn-primary"
-            (click)="bookSpace(space)"
-            [disabled]="space.status !== 'Available'"
-          >
-            Book
-          </button>
-        </td>
-        <td>
-          <button
-            *ngIf="space.booked"
-            class="btn btn-warning"
-            (click)="swapSpace(space)"
-          >
-            Swap
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <!-- Available Spaces Section -->
+    <div
+      class="spaces-section p-4 shadow bg-white rounded"
+      style="width: 30vw; transform: translateX(100px)"
+      *ngIf="showSpaces"
+    >
+      <h3>Available Spaces</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let space of availableSpaces">
+            <td>{{ space.name }}</td>
+            <td>{{ space.status }}</td>
+            <td>
+              <button
+                class="btn btn-primary mr-2"
+                (click)="bookSpace(space)"
+                [disabled]="space.status !== 'Available'"
+              >
+                Book
+              </button>
+              <button
+                *ngIf="space.booked"
+                class="btn btn-warning"
+                (click)="swapSpace(space)"
+              >
+                Swap
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

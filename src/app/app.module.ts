@@ -12,6 +12,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { BookingComponent } from './booking/booking.component';
 import { ClockComponent } from './clock/clock.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -31,8 +34,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     RouterModule,
     AppRoutingModule,
     HttpClientModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
-  providers: [],
+  providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

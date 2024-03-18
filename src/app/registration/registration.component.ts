@@ -10,11 +10,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class RegistrationComponent {
   userForm: FormGroup;
   user = {
-    username: '',
-    email: '',
-    password: '',
+    user_fullname: '',
+    user_email: '',
+    user_password: '',
     confirmPassword: '',
-    otp: '',
+    user_otp: '',
   };
   isSendOTPButtonActive = false;
   isOtpVisible = false;
@@ -23,9 +23,9 @@ export class RegistrationComponent {
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
     this.userForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: [
+      user_fullname: ['', Validators.required],
+      user_email: ['', [Validators.required, Validators.email]],
+      user_password: [
         '',
         [Validators.required, Validators.pattern(this.passwordPattern)],
       ],
@@ -33,7 +33,7 @@ export class RegistrationComponent {
         '',
         [Validators.required, Validators.pattern(this.passwordPattern)],
       ],
-      otp: ['', Validators.required],
+      user_otp: ['', Validators.required],
     });
   }
 
@@ -44,11 +44,11 @@ export class RegistrationComponent {
 
   sendOTP() {
     // Placeholder logic for sending OTP
-    console.log('OTP sent to:', this.userForm.value.email);
+    console.log('OTP sent to:', this.userForm.value.user_email);
     // Call your backend API to send OTP
     this.http
       .post<any>('your-backend-url/send-otp', {
-        email: this.userForm.value.email,
+        user_email: this.userForm.value.user_email,
       })
       .subscribe(
         (response) => {
@@ -66,10 +66,12 @@ export class RegistrationComponent {
   register() {
     // Perform validation and registration logic here
     console.log('User registered:', this.userForm.value);
+    const userData = { ...this.userForm.value };
+    delete userData.confirmPassword;
 
     // Call your backend API to register the user
     this.http
-      .post<any>('your-backend-url/register', this.userForm.value)
+      .post<any>('http://192.168.103.150:8080/register', userData)
       .subscribe(
         (response) => {
           console.log('User registered successfully');

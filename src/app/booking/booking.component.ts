@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookingService } from './booking.service';
+import { Time, formatDate } from '@angular/common';
 
 interface OfficeBuilding {
   buildingId: number;
@@ -16,15 +17,18 @@ interface Floor {
   };
 }
 
-interface Space {
+export interface Space {
   seatId?: number;
   cubicleId?: number;
   roomId?: number;
   bookingId?: number;
   name: string;
   status: string;
-  capacity?: number;
-  booked?: boolean; // New property to track booking status
+  booked?: boolean;
+  bookingDate: Date;
+  startTime: string;
+  endTime: string;
+  showSwapButton?: boolean;
 }
 
 @Component({
@@ -37,15 +41,21 @@ export class BookingComponent {
   officeBuildings: OfficeBuilding[] = [];
   showSpaces = false;
   availableSpaces: Space[] = [];
+  startDate: Date = new Date();
+  startTime: string = '';
+  duration: number = 1;
 
   constructor(
     private formBuilder: FormBuilder,
     private bookingService: BookingService
   ) {
     this.bookingForm = this.formBuilder.group({
-      officeBuilding: [''],
-      floor: [''],
-      spaceType: [''],
+      officeBuilding: ['', Validators.required],
+      floor: [{ value: '', disabled: true }, Validators.required],
+      spaceType: [{ value: '', disabled: true }, Validators.required],
+      startDate: ['', Validators.required],
+      startTime: ['', Validators.required],
+      duration: ['', Validators.required],
     });
 
     // Initialize office buildings
@@ -64,12 +74,58 @@ export class BookingComponent {
               floorName: 'Floor 1',
               spaces: {
                 officeSeats: [
-                  { seatId: 1, name: 'Seat 1', status: 'Available' },
-                  { seatId: 2, name: 'Seat 2', status: 'Occupied' },
+                  {
+                    seatId: 1,
+                    name: 'Seat 1',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    seatId: 2,
+                    name: 'Seat 2',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    seatId: 3,
+                    name: 'Seat 3',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
                 ],
                 cubicles: [
-                  { cubicleId: 1, name: 'Cubicle 1', status: 'Occupied' },
-                  { cubicleId: 2, name: 'Cubicle 2', status: 'Available' },
+                  {
+                    cubicleId: 1,
+                    name: 'Cubicle 1',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    cubicleId: 2,
+                    name: 'Cubicle 2',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    cubicleId: 3,
+                    name: 'Cubicle 3',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime:
+                      'Sun Mar 17 2024 18:28:00 GMT+0530 (India Standard Time)',
+                    endTime:
+                      'Sun Mar 17 2024 19:28:00 GMT+0530 (India Standard Time)',
+                  },
                 ],
               },
             },
@@ -78,12 +134,228 @@ export class BookingComponent {
               floorName: 'Floor 2',
               spaces: {
                 officeSeats: [
-                  { seatId: 1, name: 'Seat 1', status: 'Available' },
-                  { seatId: 2, name: 'Seat 2', status: 'Occupied' },
+                  {
+                    seatId: 1,
+                    name: 'Seat 1',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    seatId: 2,
+                    name: 'Seat 2',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
                 ],
                 cubicles: [
-                  { cubicleId: 1, name: 'Cubicle 1', status: 'Occupied' },
-                  { cubicleId: 2, name: 'Cubicle 2', status: 'Available' },
+                  {
+                    cubicleId: 1,
+                    name: 'Cubicle 1',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    cubicleId: 2,
+                    name: 'Cubicle 2',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    cubicleId: 3,
+                    name: 'Cubicle 3',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          buildingId: 2,
+          buildingName: 'Tech Hub',
+          floors: [
+            {
+              floorId: 1,
+              floorName: 'Floor 1',
+              spaces: {
+                officeSeats: [
+                  {
+                    seatId: 1,
+                    name: 'Seat 1',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    seatId: 2,
+                    name: 'Seat 2',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    seatId: 3,
+                    name: 'Seat 3',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                ],
+                cubicles: [
+                  {
+                    cubicleId: 1,
+                    name: 'Cubicle 1',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    cubicleId: 2,
+                    name: 'Cubicle 2',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    cubicleId: 3,
+                    name: 'Cubicle 3',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                ],
+              },
+            },
+            {
+              floorId: 2,
+              floorName: 'Floor 2',
+              spaces: {
+                officeSeats: [
+                  {
+                    seatId: 1,
+                    name: 'Seat 1',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    seatId: 2,
+                    name: 'Seat 2',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                ],
+                cubicles: [
+                  {
+                    cubicleId: 1,
+                    name: 'Cubicle 1',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    cubicleId: 2,
+                    name: 'Cubicle 2',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    cubicleId: 3,
+                    name: 'Cubicle 3',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                ],
+              },
+            },
+            {
+              floorId: 3,
+              floorName: 'Floor 3',
+              spaces: {
+                officeSeats: [
+                  {
+                    seatId: 1,
+                    name: 'Seat 1',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    seatId: 2,
+                    name: 'Seat 2',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    seatId: 3,
+                    name: 'Seat 3',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    seatId: 4,
+                    name: 'Seat 4',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                ],
+                cubicles: [
+                  {
+                    cubicleId: 1,
+                    name: 'Cubicle 1',
+                    status: 'Occupied',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    cubicleId: 2,
+                    name: 'Cubicle 2',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
+                  {
+                    cubicleId: 3,
+                    name: 'Cubicle 3',
+                    status: 'Available',
+                    bookingDate: new Date(),
+                    startTime: '',
+                    endTime: '',
+                  },
                 ],
               },
             },
@@ -108,6 +380,11 @@ export class BookingComponent {
     }
   }
 
+  resetForm() {
+    this.bookingForm.reset();
+    this.showSpaces = false;
+  }
+
   onFloorChange(floorId: number) {
     const selectedBuildingId = this.bookingForm.get('officeBuilding')?.value;
     const selectedBuilding = this.officeBuildings.find(
@@ -130,15 +407,57 @@ export class BookingComponent {
   }
 
   searchSpaces() {
+    const selectedDate = this.bookingForm.get('startDate')?.value;
+    const selectedTime = this.bookingForm.get('startTime')?.value;
+
+    // Combine date and time into a single string in ISO format
+    const startDateTimeString = selectedDate + 'T' + selectedTime + ':00';
+
+    const startDateTime = new Date(startDateTimeString); // Convert to Date object
+
+    const duration = this.bookingForm.get('duration')?.value;
+
+    const endDateTime = new Date(
+      startDateTime.getTime() + duration * 60 * 60 * 1000
+    ); // Calculate end time based on duration
+
+    console.log(startDateTime);
+    console.log(endDateTime);
+
+    this.bookingService
+      .getBookedSpacesInRange(startDateTime, endDateTime)
+      .subscribe((bookedSpaces: Space[]) => {
+        // Filter out booked spaces from availableSpaces
+        this.availableSpaces = this.availableSpaces.filter(
+          (space) =>
+            !bookedSpaces.some(
+              (bookedSpace) => bookedSpace.seatId === space.seatId
+            )
+        );
+
+        this.availableSpaces.forEach((space) => {
+          const matchingBookedSpace = bookedSpaces.find(
+            (bookedSpace) => bookedSpace.seatId === space.seatId
+          );
+          if (matchingBookedSpace) {
+            space.showSwapButton = true;
+          }
+        });
+
+        this.showSpaces = true;
+      });
+
     const selectedBuildingId = this.bookingForm.get('officeBuilding')?.value;
     const selectedBuilding = this.officeBuildings.find(
       (b) => b.buildingId === +selectedBuildingId
     );
+
     if (selectedBuilding) {
       const selectedFloorId = this.bookingForm.get('floor')?.value;
       const selectedFloor = selectedBuilding.floors.find(
         (f) => f.floorId === +selectedFloorId
       );
+
       if (selectedFloor) {
         const selectedSpaceType = this.bookingForm.get('spaceType')?.value;
         if (selectedSpaceType) {
@@ -167,12 +486,13 @@ export class BookingComponent {
       );
     space.booked = true;
   }
+
   swapSpace(space: Space) {
     // Logic to swap the selected space with another space
     // Assuming you have a form or mechanism to gather swap details
     const swapRequest = {
       spaceId: space.seatId || space.cubicleId || space.roomId,
-      // Add other swap details here, e.g., userId, targetSpaceId, etc.
+      // Add , e.g., userId, targetSpaceId, etc.
     };
 
     // Assuming the sendSwapRequest method expects a request object

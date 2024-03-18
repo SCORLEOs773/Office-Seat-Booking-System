@@ -10,20 +10,31 @@ export class HomepageComponent {
     {
       title: 'Shared Workspaces',
       description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consectetur lacus a metus maximus, ut malesuada urna condimentum. Donec rutrum pretium tortor, at laoreet sem scelerisque vel.',
-      imageUrl: 'assets/shared-workspace.jpg',
+        'Shared workspaces provide a collaborative environment for professionals from diverse backgrounds to work together, share ideas, and foster creativity. Equipped with modern amenities and flexible arrangements, these spaces promote productivity and innovation.',
+      imageUrl:
+        'https://ownr-blog.com/wp-content/uploads/2020/08/coworking-shared-office-space.jpg',
     },
     {
       title: 'Private Offices',
       description:
-        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce id justo ac ipsum fermentum lobortis. Nulla facilisi. Sed euismod venenatis purus, et pellentesque quam ultrices sit amet.',
-      imageUrl: 'assets/private-office.jpg',
+        'Private offices offer individuals or teams a dedicated space to work without distractions. With customizable layouts and exclusive access, these offices provide privacy and focus, ideal for meetings, client calls, and focused work sessions.',
+      imageUrl:
+        'https://img.freepik.com/premium-photo/interior-empty-office-with-glass-partitions-loft-style-view-city-park_124507-32995.jpg',
     },
     {
       title: 'Meeting Rooms',
       description:
-        'Curabitur sodales, eros sed fermentum finibus, nunc libero feugiat magna, ac pharetra libero sapien ut lectus. Phasellus sagittis arcu non feugiat bibendum. Nullam auctor mi et pharetra dapibus.',
-      imageUrl: 'assets/meeting-room.jpg',
+        'Meeting rooms are designed to facilitate productive discussions, presentations, and brainstorming sessions. Equipped with essential amenities and technology, these rooms offer a professional setting for conducting meetings and collaborations.',
+      imageUrl:
+        'https://e1.pxfuel.com/desktop-wallpaper/893/743/desktop-wallpaper-office-conference-room-meeting-room.jpg',
     },
   ];
+
+  addGradientBorder(space: any) {
+    space.isHovered = true;
+  }
+
+  removeGradientBorder(space: any) {
+    space.isHovered = false;
+  }
 }

@@ -1,44 +1,48 @@
-<div class="booking-section">
-  <h2>Booking Details</h2>
-  <div class="booking-cards">
-    <div class="booking-card" *ngFor="let booking of bookings">
-      <div class="card">
-        <div class="card-header">{{ booking.space.name }}</div>
-        <div class="card-body">
-          <p class="card-text">Date: {{ booking.date }}</p>
-          <p class="card-text">Status: {{ booking.status }}</p>
-          <!-- Add other booking details here -->
-          <button class="btn btn-danger" (click)="cancelBooking(booking)">
-            Cancel Booking
-          </button>
+<div class="container">
+  <div class="booking-section-wrapper">
+    <h2>Booking Details</h2>
+    <div class="booking-section">
+      <div class="booking-cards">
+        <div class="booking-card" *ngFor="let booking of bookings">
+          <div class="card">
+            <div class="card-header">{{ booking.space.name }}</div>
+            <div class="card-body">
+              <p class="card-text">Date: {{ booking.date }}</p>
+              <p class="card-text">Status: {{ booking.status }}</p>
+              <button class="btn btn-danger" (click)="cancelBooking(booking)">
+                Cancel Booking
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="swap-section">
+<div class="swap-section-wrapper">
   <h2>Swap Requests</h2>
-  <div class="swap-cards">
-    <div class="swap-card" *ngFor="let swapRequest of swapRequests">
-      <div class="card">
-        <div class="card-header">{{ swapRequest.sender }}</div>
-        <div class="card-body">
-          <p class="card-text">Date: {{ swapRequest.date }}</p>
-          <p class="card-text">Status: {{ swapRequest.status }}</p>
-          <!-- Add other swap request details here -->
-          <button
-            class="btn btn-success"
-            (click)="acceptSwapRequest(swapRequest)"
-          >
-            Accept
-          </button>
-          <button
-            class="btn btn-danger"
-            (click)="rejectSwapRequest(swapRequest)"
-          >
-            Reject
-          </button>
+  <div class="swap-section">
+    <div class="swap-cards">
+      <div class="swap-card" *ngFor="let swapRequest of swapRequests">
+        <div class="card">
+          <div class="card-header">{{ swapRequest.sender }}</div>
+          <div class="card-body">
+            <p class="card-text">Date: {{ swapRequest.date }}</p>
+            <p class="card-text">Status: {{ swapRequest.status }}</p>
+            <button
+              class="btn btn-success mx-2"
+              (click)="acceptSwapRequest(swapRequest)"
+            >
+              Accept
+            </button>
+            <button
+              class="btn btn-danger mx-2"
+              (click)="rejectSwapRequest(swapRequest)"
+            >
+              Reject
+            </button>
+          </div>
         </div>
       </div>
     </div>

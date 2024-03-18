@@ -1,0 +1,45 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.booking-section,
+.swap-section {
+  width: 80%;
+  margin-bottom: 30px;
+}
+
+.booking-cards,
+.swap-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.booking-card,
+.swap-card {
+  width: 45%; /* Adjust as needed for spacing between cards */
+  margin-bottom: 20px;
+}
+
+.card {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.card-body {
+  padding: 10px;
+}
+
+.btn {
+  margin-top: 10px;
+}

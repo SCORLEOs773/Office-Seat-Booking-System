@@ -2,25 +2,25 @@
   <div class="row justify-content-center mt-5">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header">User Registration</div>
+        <div class="card-header bg-primary text-white">User Registration</div>
         <div class="card-body">
           <form (ngSubmit)="register()" [formGroup]="userForm" class="row">
             <!-- Username input -->
             <div class="col-md-6 my-3">
               <div class="form-group">
-                <label for="username">Username:</label>
+                <label for="user_fullname">Full Name:</label>
                 <input
                   type="text"
-                  id="username"
-                  name="username"
+                  id="user_fullname"
+                  name="user_fullname"
                   class="form-control"
-                  formControlName="username"
+                  formControlName="user_fullname"
                 />
                 <div
                   *ngIf="
-                    userForm.get('username').invalid &&
-                    (userForm.get('username').dirty ||
-                      userForm.get('username').touched)
+                    userForm.get('user_fullname').invalid &&
+                    (userForm.get('user_fullname').dirty ||
+                      userForm.get('user_fullname').touched)
                   "
                   class="text-danger"
                 >
@@ -32,27 +32,27 @@
             <!-- Email input with validation -->
             <div class="col-md-6 my-3">
               <div class="form-group">
-                <label for="email">Email:</label>
+                <label for="user_email">Email:</label>
                 <input
                   type="email"
-                  id="email"
-                  name="email"
+                  id="user_email"
+                  name="user_email"
                   class="form-control"
-                  formControlName="email"
+                  formControlName="user_email"
                 />
                 <div
                   *ngIf="
-                    userForm.get('email').invalid &&
-                    (userForm.get('email').dirty ||
-                      userForm.get('email').touched)
+                    userForm.get('user_email').invalid &&
+                    (userForm.get('user_email').dirty ||
+                      userForm.get('user_email').touched)
                   "
                   class="text-danger"
                 >
-                  <div *ngIf="userForm.get('email').errors.required">
+                  <div *ngIf="userForm.get('user_email').errors.required">
                     Email is required
                   </div>
-                  <div *ngIf="userForm.get('email').errors.email">
-                    Invalid email format
+                  <div *ngIf="userForm.get('user_email').errors.user_email">
+                    Invalid user_email format
                   </div>
                 </div>
               </div>
@@ -62,8 +62,9 @@
                 type="button"
                 class="btn btn-secondary my-3"
                 *ngIf="
-                  userForm.get('email').valid &&
-                  (userForm.get('email').dirty || userForm.get('email').touched)
+                  userForm.get('user_email').valid &&
+                  (userForm.get('user_email').dirty ||
+                    userForm.get('user_email').touched)
                 "
                 (click)="sendOTP()"
               >
@@ -74,27 +75,27 @@
             <!-- Password input -->
             <div class="col-md-6 my-3">
               <div class="form-group">
-                <label for="password">Password:</label>
+                <label for="user_password">Password:</label>
                 <input
                   type="password"
-                  id="password"
-                  name="password"
+                  id="user_password"
+                  name="user_password"
                   class="form-control"
-                  formControlName="password"
+                  formControlName="user_password"
                   [pattern]="passwordPattern"
                 />
                 <div
                   *ngIf="
-                    userForm.get('password').invalid &&
-                    (userForm.get('password').dirty ||
-                      userForm.get('password').touched)
+                    userForm.get('user_password').invalid &&
+                    (userForm.get('user_password').dirty ||
+                      userForm.get('user_password').touched)
                   "
                   class="text-danger"
                 >
-                  <div *ngIf="userForm.get('password').errors.required">
+                  <div *ngIf="userForm.get('user_password').errors.required">
                     Password is required
                   </div>
-                  <div *ngIf="userForm.get('password').errors.pattern">
+                  <div *ngIf="userForm.get('user_password').errors.pattern">
                     Password must contain at least 8 characters, including
                     special characters, uppercase, lowercase letters and
                     numbers.
@@ -136,20 +137,23 @@
             <!-- OTP input -->
             <div class="col-md-6 my-3">
               <div class="form-group" *ngIf="isOtpVisible">
-                <label for="otp">Enter OTP:</label>
+                <label for="user_otp">Enter OTP:</label>
                 <input
                   type="text"
-                  id="otp"
-                  name="otp"
+                  id="user_otp"
+                  name="user_otp"
                   class="form-control"
-                  formControlName="otp"
+                  formControlName="user_otp"
                 />
               </div>
             </div>
 
-            <!-- Submit button -->
+            <!-- Submit and Reset buttons -->
             <div class="col-md-12 my-3">
-              <button type="submit" class="btn btn-primary">Register</button>
+              <button type="submit" class="btn btn-primary mx-3">
+                Register
+              </button>
+              <button type="reset" class="btn btn-secondary">Reset</button>
             </div>
           </form>
         </div>

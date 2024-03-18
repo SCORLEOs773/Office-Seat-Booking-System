@@ -6,15 +6,18 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "start-server": "node server/server.js"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^17.2.0",
+    "@angular/cdk": "^17.3.0",
     "@angular/common": "^17.2.0",
     "@angular/compiler": "^17.2.0",
     "@angular/core": "^17.2.0",
     "@angular/forms": "^17.2.0",
+    "@angular/material": "^17.3.0",
     "@angular/platform-browser": "^17.2.0",
     "@angular/platform-browser-dynamic": "^17.2.0",
     "@angular/router": "^17.2.0",
@@ -23,6 +26,10 @@
     "@fontsource/roboto": "^5.0.12",
     "@mui/icons-material": "^5.15.13",
     "@mui/material": "^5.15.13",
+    "cors": "^2.8.5",
+    "express": "^4.18.3",
+    "node": "^21.7.1",
+    "nodemon": "^3.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
