@@ -1,6 +1,16 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav
+  class="navbar navbar-expand-lg navbar-light bg-light"
+  style="max-height: 70px"
+>
   <div class="container">
-    <a class="navbar-brand" href="#">OFFICE LOGO</a>
+    <a class="navbar-brand" routerLink="/">
+      <img
+        src="https://i.ibb.co/9VWrshh/name.png"
+        alt="Logo"
+        height="80"
+        class="d-inline-block align-top"
+      />
+    </a>
     <button
       class="navbar-toggler"
       type="button"
@@ -30,12 +40,21 @@
         style="
           border: 2px dotted black;
           border-radius: 20px;
-          transform: translateX(650px);
+          transform: translateX(550px);
         "
       >
         <app-clock></app-clock>
       </div>
-      <ul class="navbar-nav ml-auto" style="transform: translateX(670px)">
+      <ul class="navbar-nav ml-auto" style="transform: translateX(560px)">
+        <li class="nav-item">
+          <a
+            class="nav-link mx-3"
+            routerLink="/profile"
+            routerLinkActive="active"
+          >
+            <span class="material-icons">account_circle</span>
+          </a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/login" routerLinkActive="active"
             >Login</a

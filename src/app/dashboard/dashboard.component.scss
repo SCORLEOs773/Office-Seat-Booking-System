@@ -1,12 +1,15 @@
-.dashboard {
+.container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+}
+
+.booking-section-wrapper,
+.swap-section-wrapper {
+  width: 100%;
 }
 
 .booking-section,
 .swap-section {
-  width: 80%;
   margin-bottom: 30px;
 }
 
@@ -19,12 +22,11 @@
 
 .booking-card,
 .swap-card {
-  width: 45%; /* Adjust as needed for spacing between cards */
+  width: calc(50% - 10px);
   margin-bottom: 20px;
 }
 
 .card {
-  width: 100%;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -33,7 +35,8 @@
 .card-header {
   background-color: #f0f0f0;
   padding: 10px;
-  font-weight: bold;
+  font-weight: 500;
+  text-align: center;
 }
 
 .card-body {

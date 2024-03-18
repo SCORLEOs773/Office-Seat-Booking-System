@@ -20,7 +20,7 @@ interface SwapRequest {
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
   // make dummy data for bookings and swapRequests
@@ -29,8 +29,8 @@ export class DashboardComponent implements OnInit {
     { id: 2, date: '14', space: 'Office Seat', status: 'Booked' },
   ];
   swapRequests: SwapRequest[] = [
-    { id: 1, space: 'Cubicle', date: '12', sender: 'user' },
-    { id: 2, space: 'Cubicle', date: '12', sender: 'user' },
+    { id: 1, space: 'Cubicle', date: '12', sender: 'James Salvador' },
+    { id: 2, space: 'Cubicle', date: '12', sender: 'Peaky Blinders' },
   ];
 
   constructor(private bookingService: BookingService) {}
