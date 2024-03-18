@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.css'],
+  styleUrls: ['./homepage.component.scss'],
 })
-export class HomepageComponent {
+export class HomepageComponent implements OnInit {
+  typewriterContent: string;
   officeSpaces: any[] = [
     {
       title: 'Shared Workspaces',
@@ -36,5 +37,38 @@ export class HomepageComponent {
 
   removeGradientBorder(space: any) {
     space.isHovered = false;
+  }
+
+  constructor() {}
+
+  ngOnInit(): void {
+    this.typewriterContent =
+      'Explore the different office space booking options available to suit your needs.';
+
+    let index = 0;
+    setInterval(() => {
+      const lines = [
+        'Find the perfect workspace for your tasks and projects.',
+        'Book meeting rooms for productive discussions and presentations.',
+        'Explore the different office space booking options available to suit your needs.',
+      ];
+
+      const nextLine = lines[index];
+      index = (index + 1) % lines.length;
+      this.typewriterContent = '';
+      this.typewriter(nextLine, 50);
+    }, 6000);
+  }
+
+  typewriter(text: string, delay: number) {
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < text.length) {
+        this.typewriterContent += text.charAt(i);
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, delay);
   }
 }

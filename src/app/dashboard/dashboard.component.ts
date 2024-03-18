@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BookingService } from '../booking/booking.service';
+import { AuthenticationService } from '../../authentication.service';
 
 interface Booking {
   id: number;
@@ -17,6 +18,20 @@ interface SwapRequest {
   // Add other swap request details as needed
 }
 
+interface PendingBooking {
+  id: number;
+  date: string;
+  space: string;
+  status: string;
+}
+
+interface PendingCancellation {
+  id: number;
+  date: string;
+  space: string;
+  status: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -32,47 +47,55 @@ export class DashboardComponent implements OnInit {
     { id: 1, space: 'Cubicle', date: '12', sender: 'James Salvador' },
     { id: 2, space: 'Cubicle', date: '12', sender: 'Peaky Blinders' },
   ];
+  pendingBookings: PendingBooking[] = [
+    { id: 1, date: '16', space: 'Office Seat', status: 'Pending Approval' },
+    { id: 2, date: '18', space: 'Cubicle', status: 'Pending Approval' },
+  ];
 
-  constructor(private bookingService: BookingService) {}
+  pendingCancellations: PendingCancellation[] = [
+    { id: 1, date: '20', space: 'Office Seat', status: 'Pending Approval' },
+    { id: 2, date: '22', space: 'Cubicle', status: 'Pending Approval' },
+  ];
+  isAdmin: boolean = false;
+
+  constructor(
+    private bookingService: BookingService,
+    private authService: AuthenticationService
+  ) {}
 
   ngOnInit(): void {
     this.fetchBookingDetails();
     this.fetchSwapRequests();
+    this.isAdmin = this.authService.isAdmin();
   }
 
   fetchBookingDetails(): void {
-    // Call your booking service to fetch booking details
     this.bookingService.getBookings().subscribe((bookings) => {
       this.bookings = bookings;
     });
   }
 
   fetchSwapRequests(): void {
-    // Call your booking service to fetch swap requests
     this.bookingService.getSwapRequests().subscribe((swapRequests) => {
       this.swapRequests = swapRequests;
     });
   }
 
   cancelBooking(booking: Booking): void {
-    // Call your booking service to cancel the booking
     this.bookingService.cancelBooking(booking.id).subscribe(() => {
-      // Update the status of the booking in the UI to "Cancellation Pending"
       booking.status = 'Cancellation Pending';
     });
   }
 
   acceptSwapRequest(swapRequest: SwapRequest): void {
-    // Call your booking service to accept the swap request
     this.bookingService.acceptSwapRequest(swapRequest.id).subscribe(() => {
-      // Update the UI or remove the swap request card, etc.
+      // You can update the UI or perform other actions here
     });
   }
 
   rejectSwapRequest(swapRequest: SwapRequest): void {
-    // Call your booking service to reject the swap request
     this.bookingService.rejectSwapRequest(swapRequest.id).subscribe(() => {
-      // Update the UI or remove the swap request card, etc.
+      // You can update the UI or perform other actions here
     });
   }
 }

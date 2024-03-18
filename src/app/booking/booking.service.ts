@@ -1,13 +1,46 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Space } from './booking.component';
+import { environment } from '../../enviorment';
+
+export interface OfficeBuilding {
+  buildingId: number;
+  buildingName: string;
+  floors: Floor[];
+}
+
+export interface Floor {
+  floorId: number;
+  floorName: string;
+  spaces: {
+    [key: string]: Space[];
+  };
+}
+
+export interface Space {
+  seatId?: number;
+  cubicleId?: number;
+  roomId?: number;
+  bookingId?: number;
+  name: string;
+  status: string;
+  booked?: boolean;
+  bookingDate: Date;
+  startTime: string;
+  endTime: string;
+  showSwapButton?: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class BookingService {
+  apiUrl = environment.apiUrl;
   constructor(private http: HttpClient) {}
+
+  getOfficeBuildings(): Observable<OfficeBuilding[]> {
+    return this.http.get<OfficeBuilding[]>('/offices');
+  }
 
   // Method to book a space
   bookSpace(spaceId: number): Observable<any> {
@@ -56,7 +89,7 @@ export class BookingService {
     endDateTime: Date
   ): Observable<Space[]> {
     // Adjust the URL and payload according to your backend API
-    const url = `your_api_endpoint/getBookedSpacesInRange`;
+    const url = this.apiUrl;
     const payload = {
       startDateTime: startDateTime.toISOString(), // Convert to ISO string or adjust format as needed
       endDateTime: endDateTime.toISOString(), // Convert to ISO string or adjust format as needed
@@ -77,7 +110,7 @@ export class BookingService {
     }
 
     // Adjust the URL and payload according to your backend API
-    const url = `your_api_endpoint/searchAvailableSpaces`;
+    const url = `${this.apiUrl}/searchAvailableSpaces`;
     const payload = {
       startDateTime: startDateTime.toISOString(), // Convert to ISO string or adjust format as needed
       endDateTime: endDateTime.toISOString(), // Convert to ISO string or adjust format as needed

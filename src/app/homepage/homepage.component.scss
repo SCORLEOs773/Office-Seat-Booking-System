@@ -1,0 +1,40 @@
+.card {
+  transition: box-shadow 0.3s; /* Add transition for smooth effect */
+}
+
+.card:hover {
+  box-shadow: 0 0 0 2px rgba(255, 255, 0, 0.5),
+    /* Light yellow */ 0 0 0 3px rgba(0, 0, 255, 0.5),
+    /* Light blue */ 0 0 0 4px rgba(0, 255, 0, 0.5); /* Light green */
+}
+
+/* Define typewriter animation */
+.typewriter {
+  overflow: hidden; /* Ensures the text is not visible outside its containing element */
+  border-right: 0.15em solid orange; /* Border for the typewriter effect */
+  white-space: nowrap; /* Prevents text from wrapping */
+  margin: 0 auto; /* Centers the text horizontally */
+  letter-spacing: 0.15em; /* Adjust spacing between characters */
+  animation: typing 3.5s steps(30, end), blink-caret 0.75s step-end infinite; /* Animation duration and steps */
+}
+
+/* Typing animation */
+@keyframes typing {
+  from {
+    width: 0; /* Start with no width */
+  }
+  to {
+    width: 100%; /* End with full width */
+  }
+}
+
+/* Blinking cursor animation */
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent; /* Start and end with no border color */
+  }
+  50% {
+    border-color: orange; /* Midpoint with border color */
+  }
+}

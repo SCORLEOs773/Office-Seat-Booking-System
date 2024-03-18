@@ -16,6 +16,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ProfileComponent } from './profile/profile.component';
+import { IMSComponent } from './ims/ims.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ProfileComponent } from './profile/profile.component';
     ClockComponent,
     DashboardComponent,
     ProfileComponent,
+    IMSComponent,
   ],
   imports: [
     BrowserModule,

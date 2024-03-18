@@ -67,6 +67,9 @@
             },
             "development": {
               "buildTarget": "Office_Seat_Booking_System:build:development"
+            },
+            "options": {
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

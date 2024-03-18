@@ -14,9 +14,9 @@
             style="transform: translateX(290px)"
             [style.background-color]="getAvatarColor()"
           >
-            {{ user.fullName.charAt(0) }}
+            {{ user.user_fullName.charAt(0).toUpperCase() }}
           </div>
-          <h2>{{ user.fullName }}</h2>
+          <h2>{{ user.user_fullName }}</h2>
         </div>
         <div class="mb-3">
           <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
@@ -32,30 +32,30 @@
           </button>
         </div>
         <div *ngIf="isEditingName" class="mt-3">
-          <label for="newName">New Name:</label>
+          <label for="user_fullname">New Name:</label>
           <input
             type="text"
             class="form-control"
-            id="newName"
-            [(ngModel)]="user.fullName"
+            id="user_fullname"
+            [(ngModel)]="user.user_fullName"
           />
           <button class="btn btn-primary mt-2" (click)="saveName()">
             Save
           </button>
         </div>
         <div *ngIf="isChangingPassword" class="mt-3">
-          <label for="currentPassword">Current Password:</label>
+          <label for="user_old_password">Current Password:</label>
           <input
             type="password"
             class="form-control"
-            id="currentPassword"
+            id="user_old_password"
             [(ngModel)]="currentPassword"
           />
-          <label for="newPassword">New Password:</label>
+          <label for="user_new_password">New Password:</label>
           <input
             type="password"
             class="form-control"
-            id="newPassword"
+            id="user_new_password"
             [(ngModel)]="newPassword"
           />
           <button class="btn btn-primary mt-2" (click)="changePassword()">

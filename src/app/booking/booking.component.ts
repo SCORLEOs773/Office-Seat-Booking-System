@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookingService } from './booking.service';
 import { Time, formatDate } from '@angular/common';
@@ -36,7 +36,7 @@ export interface Space {
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.css'],
 })
-export class BookingComponent {
+export class BookingComponent implements OnInit {
   bookingForm: FormGroup;
   officeBuildings: OfficeBuilding[] = [];
   showSpaces = false;
@@ -44,6 +44,18 @@ export class BookingComponent {
   startDate: Date = new Date();
   startTime: string = '';
   duration: number = 1;
+
+  ngOnInit(): void {
+    // Fetch data from backend on component initialization
+    this.fetchDataFromBackend();
+  }
+
+  fetchDataFromBackend(): void {
+    this.bookingService.getOfficeBuildings().subscribe((officeBuildings) => {
+      this.officeBuildings = officeBuildings;
+    });
+    // Other data fetching logic can be similarly implemented
+  }
 
   constructor(
     private formBuilder: FormBuilder,

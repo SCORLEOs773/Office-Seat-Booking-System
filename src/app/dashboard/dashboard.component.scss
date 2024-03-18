@@ -46,3 +46,51 @@
 .btn {
   margin-top: 10px;
 }
+
+.pending-approval-section-wrapper,
+.pending-cancellation-section-wrapper {
+  width: 100%;
+}
+
+.pending-approval-section,
+.pending-cancellation-section {
+  margin-bottom: 30px;
+}
+
+.pending-approval-cards,
+.pending-cancellation-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.pending-approval-card,
+.pending-cancellation-card {
+  width: calc(50% - 10px);
+  margin-bottom: 20px;
+}
+
+.pending-approval-card .card,
+.pending-cancellation-card .card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pending-approval-card .card-header,
+.pending-cancellation-card .card-header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.pending-approval-card .card-body,
+.pending-cancellation-card .card-body {
+  padding: 10px;
+}
+
+.pending-approval-card .btn,
+.pending-cancellation-card .btn {
+  margin-top: 10px;
+}

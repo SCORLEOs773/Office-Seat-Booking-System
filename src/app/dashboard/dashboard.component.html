@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="!isAdmin">
   <div class="booking-section-wrapper">
     <h2>Booking Details</h2>
     <div class="booking-section">
@@ -44,6 +44,74 @@
                 (click)="rejectSwapRequest(swapRequest)"
               >
                 Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<
+<div *ngIf="isAdmin">
+  <!-- Pending Booking Approval section -->
+  <div class="pending-approval-section-wrapper">
+    <h2>Pending Booking Approval</h2>
+    <!-- Pending Booking Approval section content -->
+    <div class="pending-approval-section">
+      <div class="pending-approval-cards">
+        <!-- Iterate over pending booking approvals and display cards -->
+        <div
+          class="pending-approval-card"
+          *ngFor="let pendingBooking of pendingBookings"
+        >
+          <!-- Pending booking approval card -->
+          <div class="card">
+            <div class="card-header">
+              Pending Booking Approval - Date: {{ pendingBooking.date }}
+            </div>
+            <div class="card-body">
+              <p class="card-text">Date: {{ pendingBooking.date }}</p>
+              <p class="card-text">Status: {{ pendingBooking.status }}</p>
+              <button
+                class="btn btn-success"
+                (click)="approveBooking(pendingBooking)"
+              >
+                Approve Booking
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pending Cancellation Approval section -->
+  <div class="pending-cancellation-section-wrapper">
+    <h2>Pending Cancellation Approval</h2>
+    <!-- Pending Cancellation Approval section content -->
+    <div class="pending-cancellation-section">
+      <div class="pending-cancellation-cards">
+        <!-- Iterate over pending cancellation approvals and display cards -->
+        <div
+          class="pending-cancellation-card"
+          *ngFor="let pendingCancellation of pendingCancellations"
+        >
+          <!-- Pending cancellation approval card -->
+          <div class="card">
+            <div class="card-header">
+              Pending Cancellation Approval - Date:
+              {{ pendingCancellation.date }}
+            </div>
+            <div class="card-body">
+              <p class="card-text">Date: {{ pendingCancellation.date }}</p>
+              <p class="card-text">Status: {{ pendingCancellation.status }}</p>
+              <button
+                class="btn btn-danger"
+                (click)="approveCancellation(pendingCancellation)"
+              >
+                Approve Cancellation
               </button>
             </div>
           </div>

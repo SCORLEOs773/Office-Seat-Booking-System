@@ -1,9 +1,0 @@
-.card {
-  transition: box-shadow 0.3s; /* Add transition for smooth effect */
-}
-
-.card:hover {
-  box-shadow: 0 0 0 2px rgba(255, 255, 0, 0.5),
-    /* Light yellow */ 0 0 0 3px rgba(0, 0, 255, 0.5),
-    /* Light blue */ 0 0 0 4px rgba(0, 255, 0, 0.5); /* Light green */
-}
