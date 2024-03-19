@@ -2,18 +2,11 @@
   <h1 class="text-center mb-4">Infrastructure Management System</h1>
   <div class="row">
     <div class="col-md-6 offset-md-3">
-      <form (ngSubmit)="submitData()" #imsForm="ngForm">
-        <div class="mb-3">
-          <label for="officeId" class="form-label">Office ID:</label>
-          <input
-            type="text"
-            class="form-control"
-            id="officeId"
-            name="officeId"
-            required
-            [(ngModel)]="officeId"
-          />
-        </div>
+      <form
+        *ngIf="!officeCreated"
+        (ngSubmit)="createOffice()"
+        #officeForm="ngForm"
+      >
         <div class="mb-3">
           <label for="officeName" class="form-label">Office Name:</label>
           <input
@@ -25,65 +18,56 @@
             [(ngModel)]="officeName"
           />
         </div>
-        <div *ngFor="let floor of floors; let i = index">
-          <hr />
+        <button type="submit" class="btn btn-primary">Create</button>
+      </form>
+      <div *ngIf="officeCreated">
+        <hr />
+        <h3>Add Floors</h3>
+        <div class="mb-3">
+          <label for="numFloors" class="form-label">Number of Floors:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="numFloors"
+            name="numFloors"
+            [(ngModel)]="numFloors"
+            required
+          />
+        </div>
+        <button class="btn btn-success mb-3" (click)="addFloors()">
+          Add Floors
+        </button>
+        <div *ngFor="let floor of floors; let i = index" class="mb-4">
           <h4>Floor {{ i + 1 }}</h4>
           <div class="mb-3">
-            <label for="floorId{{ i }}" class="form-label">Floor ID:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="floorId{{ i }}"
-              name="floorId{{ i }}"
-              required
-              [(ngModel)]="floor.id"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="floorName{{ i }}" class="form-label">Floor Name:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="floorName{{ i }}"
-              name="floorName{{ i }}"
-              required
-              [(ngModel)]="floor.name"
-            />
-          </div>
-          <div class="mb-3">
             <label for="numSeats{{ i }}" class="form-label"
-              >Number of Office Seats:</label
+              >Number of Seats:</label
             >
             <input
               type="number"
               class="form-control"
               id="numSeats{{ i }}"
               name="numSeats{{ i }}"
-              required
               [(ngModel)]="floor.numSeats"
+              required
             />
           </div>
           <div class="mb-3">
-            <label for="numCubicles{{ i }}" class="form-label"
-              >Number of Cubicles:</label
-            >
-            <input
-              type="number"
+            <label for="seatType{{ i }}" class="form-label">Seat Type:</label>
+            <select
               class="form-control"
-              id="numCubicles{{ i }}"
-              name="numCubicles{{ i }}"
+              id="seatType{{ i }}"
+              name="seatType{{ i }}"
+              [(ngModel)]="floor.seatType"
               required
-              [(ngModel)]="floor.numCubicles"
-            />
+            >
+              <option value="Seats">Seats</option>
+              <option value="Cubicles">Cubicles</option>
+            </select>
           </div>
         </div>
-        <button type="button" class="btn btn-success" (click)="addFloor()">
-          Add Floor
-        </button>
-        <button type="button" class="btn btn-primary" (click)="submitData()">
-          Submit
-        </button>
-      </form>
+        <button class="btn btn-primary" (click)="submitData()">Submit</button>
+      </div>
     </div>
   </div>
 </div>
