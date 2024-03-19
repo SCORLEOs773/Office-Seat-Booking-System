@@ -1,8 +1,14 @@
+// ims.component.ts
 import { Component, OnInit } from '@angular/core';
 import { IMSService } from './ims.service';
 
 interface Floor {
-  numSeats: number;
+  floorNumber: string;
+  seats: Seat[];
+}
+
+interface Seat {
+  seatNumber: string;
   seatType: string;
 }
 
@@ -13,7 +19,8 @@ interface Floor {
 })
 export class IMSComponent implements OnInit {
   officeName: string = '';
-  numFloors: number;
+  floorNumber: string = '';
+  numSeats: number;
   floors: Floor[] = [];
   officeCreated: boolean = false;
   officeId: string;
@@ -26,8 +33,13 @@ export class IMSComponent implements OnInit {
     this.imsService.createOffice(this.officeName).subscribe(
       (response) => {
         console.log('Office created successfully:', response);
-        this.officeId = response.officeId;
-        this.officeCreated = true;
+        if (response && response.office && response.office.officeId) {
+          localStorage.setItem('officeId', response.office.officeId);
+          this.officeId = response.office.officeId;
+          this.officeCreated = true;
+        } else {
+          console.error('Error: Office ID not found in response.');
+        }
       },
       (error) => {
         console.error('Error creating office:', error);
@@ -36,24 +48,65 @@ export class IMSComponent implements OnInit {
     );
   }
 
-  addFloors() {
-    this.floors = [];
-    for (let i = 0; i < this.numFloors; i++) {
-      this.floors.push({ numSeats: 0, seatType: 'Seats' });
+  addFloor() {
+    if (this.floorNumber && this.numSeats) {
+      // Check if both floor number and number of seats are provided
+      this.imsService.createFloor(this.floorNumber, this.officeId).subscribe(
+        (response) => {
+          console.log('Floor created successfully:', response);
+          localStorage.setItem('currentFloorId', response.Floor.floorId);
+          console.log(response.floorId);
+          const newFloor: Floor = {
+            floorNumber: this.floorNumber,
+            seats: [], // Initialize an empty array of seats
+          };
+
+          // Push the correct number of empty seats into the seats array
+          for (let i = 0; i < this.numSeats; i++) {
+            newFloor.seats.push({ seatNumber: '', seatType: 'Seats' });
+          }
+
+          this.floors.push(newFloor);
+        },
+        (error) => {
+          console.error('Error creating floor:', error);
+          // Handle error appropriately
+        }
+      );
+    } else {
+      console.error('Please enter both floor number and number of seats.');
     }
   }
 
   submitData() {
-    this.imsService.submitFloorData(this.officeId, this.floors).subscribe(
+    const currentFloorId = localStorage.getItem('currentFloorId');
+    console.log(currentFloorId);
+    if (!currentFloorId) {
+      console.error('Error: currentFloorId is undefined.');
+      return;
+    }
+
+    // Prepare seatsData array
+    const seats = this.floors.flatMap((floor) => {
+      return floor.seats.map((seat) => {
+        return {
+          floor_id: currentFloorId,
+          seat_number: seat.seatNumber,
+          seat_type: seat.seatType.toUpperCase(),
+        };
+      });
+    });
+
+    this.imsService.submitSeatsData(currentFloorId, seats).subscribe(
       (response) => {
-        console.log('Floor data submitted successfully:', response);
+        console.log('Seats data submitted successfully:', response);
         // Reset form data
-        this.numFloors = null;
+        this.floorNumber = '';
         this.floors = [];
         this.officeCreated = false;
       },
       (error) => {
-        console.error('Error submitting floor data:', error);
+        console.error('Error submitting seats data:', error);
         // Handle error appropriately
       }
     );

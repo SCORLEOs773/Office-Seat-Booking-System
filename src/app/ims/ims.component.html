@@ -1,7 +1,9 @@
+<!-- ims.component.html -->
 <div class="container">
   <h1 class="text-center mb-4">Infrastructure Management System</h1>
   <div class="row">
     <div class="col-md-6 offset-md-3">
+      <!-- Office creation form -->
       <form
         *ngIf="!officeCreated"
         (ngSubmit)="createOffice()"
@@ -20,52 +22,70 @@
         </div>
         <button type="submit" class="btn btn-primary">Create</button>
       </form>
+
+      <!-- Floor creation form -->
       <div *ngIf="officeCreated">
         <hr />
         <h3>Add Floors</h3>
         <div class="mb-3">
-          <label for="numFloors" class="form-label">Number of Floors:</label>
+          <label for="floorNumber" class="form-label">Floor Number:</label>
           <input
-            type="number"
+            type="text"
             class="form-control"
-            id="numFloors"
-            name="numFloors"
-            [(ngModel)]="numFloors"
+            id="floorNumber"
+            name="floorNumber"
+            [(ngModel)]="floorNumber"
             required
           />
         </div>
-        <button class="btn btn-success mb-3" (click)="addFloors()">
-          Add Floors
+        <div class="mb-3">
+          <label for="numSeats" class="form-label">Number of Seats:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="numSeats"
+            name="numSeats"
+            [(ngModel)]="numSeats"
+            required
+          />
+        </div>
+        <button class="btn btn-success mb-3" (click)="addFloor()">
+          Add Floor
         </button>
+
+        <!-- Seats creation form -->
         <div *ngFor="let floor of floors; let i = index" class="mb-4">
-          <h4>Floor {{ i + 1 }}</h4>
-          <div class="mb-3">
-            <label for="numSeats{{ i }}" class="form-label"
-              >Number of Seats:</label
+          <h4>Floor {{ floor.floorNumber }}</h4>
+          <div *ngFor="let seat of floor.seats; let j = index" class="mb-3">
+            <label for="seatNumber{{ i }}{{ j }}" class="form-label"
+              >Seat Number:</label
             >
             <input
-              type="number"
+              type="text"
               class="form-control"
-              id="numSeats{{ i }}"
-              name="numSeats{{ i }}"
-              [(ngModel)]="floor.numSeats"
+              id="seatNumber{{ i }}{{ j }}"
+              name="seatNumber{{ i }}{{ j }}"
+              [(ngModel)]="seat.seatNumber"
               required
             />
-          </div>
-          <div class="mb-3">
-            <label for="seatType{{ i }}" class="form-label">Seat Type:</label>
-            <select
-              class="form-control"
-              id="seatType{{ i }}"
-              name="seatType{{ i }}"
-              [(ngModel)]="floor.seatType"
-              required
-            >
-              <option value="Seats">Seats</option>
-              <option value="Cubicles">Cubicles</option>
-            </select>
+            <div class="mb-3">
+              <label for="seatType{{ i }}{{ j }}" class="form-label"
+                >Seat Type:</label
+              >
+              <select
+                class="form-control"
+                id="seatType{{ i }}{{ j }}"
+                name="seatType{{ i }}{{ j }}"
+                [(ngModel)]="seat.seatType"
+                required
+              >
+                <option value="Seat">Seats</option>
+                <option value="Cubicle">Cubicles</option>
+              </select>
+            </div>
           </div>
         </div>
+
         <button class="btn btn-primary" (click)="submitData()">Submit</button>
       </div>
     </div>
