@@ -3,7 +3,7 @@
     <!-- Form Section -->
     <div
       class="form-section p-4 shadow bg-white rounded"
-      style="width: 30vw; transform: translateX(-200px)"
+      style="width: 30vw; transform: translateX(00px)"
     >
       <h2 class="mb-4">Office Space Booking</h2>
       <form [formGroup]="bookingForm" (ngSubmit)="searchSpaces()">
@@ -17,13 +17,14 @@
           >
             <option value="" disabled selected>Select Office Building</option>
             <option
-              *ngFor="let building of officeBuildings"
-              [value]="building.buildingId"
+              *ngFor="let building of officeNames"
+              [value]="building.officeId"
             >
-              {{ building.buildingName }}
+              {{ building.officeName }}
             </option>
           </select>
         </div>
+
         <div class="form-group">
           <label for="floor">Floor:</label>
           <select
@@ -31,17 +32,14 @@
             formControlName="floor"
             class="form-control"
             (change)="onFloorChange($event.target.value)"
-            [disabled]="!bookingForm.get('officeBuilding')?.value"
           >
             <option value="" disabled selected>Select Floor</option>
-            <option
-              *ngFor="let floor of getSelectedBuilding()?.floors"
-              [value]="floor.floorId"
-            >
-              {{ floor.floorName }}
+            <option *ngFor="let floor of floors" [value]="floor.floorId">
+              {{ floor.floorNumber }}
             </option>
           </select>
         </div>
+
         <div class="form-group">
           <label for="spaceType">Space Type:</label>
           <select
@@ -51,20 +49,15 @@
             [disabled]="!bookingForm.get('floor')?.value"
           >
             <option value="" disabled selected>Select Space Type</option>
-            <ng-container *ngIf="bookingForm.get('floor')?.value">
-              <ng-container
-                *ngFor="let spaceType of getSelectedFloor()?.spaces | keyvalue"
-              >
-                <option
-                  *ngIf="spaceType.key !== 'meetingRooms'"
-                  [value]="spaceType.key"
-                >
-                  {{ spaceType.key }}
-                </option>
-              </ng-container>
-            </ng-container>
+            <!-- <option *ngFor="let seat of seats" [value]="spaceType">
+              {{ spaceType }}
+            </option> -->
+            <option value="ALL">All Types</option>
+            <option value="SEAT">Office Seats</option>
+            <option value="CUBICLE">Cubicles</option>
           </select>
         </div>
+
         <div class="form-group">
           <label for="startDate">Start Date:</label>
           <input
@@ -109,6 +102,7 @@
         <thead>
           <tr>
             <th>Name</th>
+            <th>Space Type</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -116,12 +110,17 @@
         <tbody>
           <tr *ngFor="let space of availableSpaces">
             <td>{{ space.name }}</td>
+            <td class="text-center">{{ space.type }}</td>
             <td>{{ space.status }}</td>
             <td>
               <button
-                class="btn btn-primary mr-2"
+                class="btn mr-2"
+                [ngClass]="{
+                  'btn-success': space.status === 'Available',
+                  'btn-secondary': space.status === 'Booked'
+                }"
                 (click)="bookSpace(space)"
-                [disabled]="space.status !== 'Available'"
+                [disabled]="space.status === 'Booked'"
               >
                 Book
               </button>

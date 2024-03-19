@@ -18,7 +18,7 @@ export class ProfileService {
       'Content-Type': 'application/json',
       Authorization: `${token}`,
     });
-    return this.http.post(url, { fullName: newName }, { headers });
+    return this.http.patch(url, { user_fullname: newName }, { headers });
   }
 
   updateUserPassword(
@@ -31,6 +31,12 @@ export class ProfileService {
       'Content-Type': 'application/json',
       Authorization: `${token}`,
     });
-    return this.http.post(url, { currentPassword, newPassword }, { headers });
+    const user_old_password = currentPassword;
+    const user_new_password = newPassword;
+    return this.http.patch(
+      url,
+      { user_old_password, user_new_password },
+      { headers }
+    );
   }
 }

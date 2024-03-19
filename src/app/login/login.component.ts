@@ -27,6 +27,8 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       user_email: ['admin@admin.com', [Validators.required, Validators.email]],
       user_password: ['admin123', Validators.required],
+      // user_email: ['s@s.com', [Validators.required, Validators.email]],
+      // user_password: ['tesT@123', Validators.required],
     });
   }
 
@@ -46,7 +48,16 @@ export class LoginComponent implements OnInit {
             // Assuming backend returns a token upon successful login
             if (response.token) {
               // Store the token in local storage
+              console.log(response);
               localStorage.setItem('token', response.token);
+              //Store user information in local storage
+              localStorage.setItem('user_email', response.data.user_email);
+              localStorage.setItem(
+                'user_fullname',
+                response.data.user_fullname
+              );
+              console.log(response.user_email);
+              console.log(response.user_fullname);
               // Check if the user is admin
               const isAdmin =
                 user_email === 'admin@admin.com' &&

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
@@ -39,7 +40,7 @@ export class HomepageComponent implements OnInit {
     space.isHovered = false;
   }
 
-  constructor() {}
+  constructor(private router:Router) {}
 
   ngOnInit(): void {
     this.typewriterContent =
@@ -70,5 +71,10 @@ export class HomepageComponent implements OnInit {
         clearInterval(interval);
       }
     }, delay);
+  }
+
+  onBook()
+  {
+    this.router.navigate(['/booking']);
   }
 }

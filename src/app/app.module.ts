@@ -17,6 +17,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ProfileComponent } from './profile/profile.component';
 import { IMSComponent } from './ims/ims.component';
+import { ErrorComponent } from './error/error.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { IMSComponent } from './ims/ims.component';
     DashboardComponent,
     ProfileComponent,
     IMSComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,

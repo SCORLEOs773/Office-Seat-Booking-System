@@ -49,14 +49,14 @@
             type="password"
             class="form-control"
             id="user_old_password"
-            [(ngModel)]="currentPassword"
+            [(ngModel)]="user_old_password"
           />
           <label for="user_new_password">New Password:</label>
           <input
             type="password"
             class="form-control"
             id="user_new_password"
-            [(ngModel)]="newPassword"
+            [(ngModel)]="user_new_password"
           />
           <button class="btn btn-primary mt-2" (click)="changePassword()">
             Change Password

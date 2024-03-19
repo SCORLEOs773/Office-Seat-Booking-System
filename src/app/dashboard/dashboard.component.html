@@ -3,13 +3,14 @@
     <h2>Booking Details</h2>
     <div class="booking-section">
       <div class="booking-cards">
-        <div class="booking-card" *ngFor="let booking of bookings">
+        <div class="booking-card" *ngFor="let booking of bookings | keyvalue">
           <div class="card">
             <div class="card-header">
               Booking Details - Date: {{ booking.date }}
             </div>
             <div class="card-body">
               <p class="card-text">Date: {{ booking.date }}</p>
+              <p class="card-text">Space: {{ booking.space }}</p>
               <p class="card-text">Status: {{ booking.status }}</p>
               <button class="btn btn-danger" (click)="cancelBooking(booking)">
                 Cancel Booking

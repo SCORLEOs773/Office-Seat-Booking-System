@@ -39,10 +39,11 @@ interface PendingCancellation {
 })
 export class DashboardComponent implements OnInit {
   // make dummy data for bookings and swapRequests
-  bookings: Booking[] = [
-    { id: 1, date: '12', space: 'Cubicle', status: 'Booked' },
-    { id: 2, date: '14', space: 'Office Seat', status: 'Booked' },
-  ];
+  // bookings: Booking[] = [
+  //   { id: 1, date: '12', space: 'Cubicle', status: 'Booked' },
+  //   { id: 2, date: '14', space: 'Office Seat', status: 'Booked' },
+  // ];
+  bookings: Booking[] = [];
   swapRequests: SwapRequest[] = [
     { id: 1, space: 'Cubicle', date: '12', sender: 'James Salvador' },
     { id: 2, space: 'Cubicle', date: '12', sender: 'Peaky Blinders' },
@@ -72,6 +73,7 @@ export class DashboardComponent implements OnInit {
   fetchBookingDetails(): void {
     this.bookingService.getBookings().subscribe((bookings) => {
       this.bookings = bookings;
+      console.log(this.bookings);
     });
   }
 

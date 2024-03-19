@@ -7,6 +7,7 @@ import { BookingComponent } from './booking/booking.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { IMSComponent } from './ims/ims.component';
+import { ErrorComponent } from './error/error.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -16,6 +17,8 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'ims', component: IMSComponent },
+  { path: 'error', component: ErrorComponent },
+  { path: '**', redirectTo: '/error' },
 ];
 
 @NgModule({

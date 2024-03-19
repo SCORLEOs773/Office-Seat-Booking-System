@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './profile.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile',
@@ -9,9 +10,17 @@ import { ProfileService } from './profile.service';
 export class ProfileComponent implements OnInit {
   user: any = {
     avatar: 'https://example.com/avatar.jpg',
-    user_fullName: 'John Doe',
-    email: 'john@example.com',
-    bio: 'John Doe is a passionate software developer with a keen interest in building innovative solutions to solve real-world problems. He has a strong foundation in various programming languages and frameworks, including JavaScript, Python, and Angular. With a proactive attitude and excellent problem-solving skills, John thrives in dynamic environments and enjoys collaborating with cross-functional teams to deliver high-quality software products. Outside of work, he enjoys hiking, reading, and experimenting with new technologies.',
+    user_fullName: localStorage.getItem('user_fullname') || 'John Doe',
+    email: localStorage.getItem('user_email') || 'john@example.com',
+    bio: `${localStorage.getItem(
+      'user_fullname'
+    )} is a passionate software developer with a keen interest in building innovative solutions to solve real-world problems. ${localStorage.getItem(
+      'user_fullname'
+    )} has a strong foundation in various programming languages and frameworks, including JavaScript, Python, and Angular. With a proactive attitude and excellent problem-solving skills, ${localStorage.getItem(
+      'user_fullname'
+    )} thrives in dynamic environments and enjoys collaborating with cross-functional teams to deliver high-quality software products. Outside of work, ${localStorage.getItem(
+      'user_fullname'
+    )} enjoys hiking, reading, and experimenting with new technologies.`,
   };
 
   isEditingName: boolean = false;
@@ -41,7 +50,10 @@ export class ProfileComponent implements OnInit {
     '#607D8B',
   ];
 
-  constructor(private profileService: ProfileService) {}
+  constructor(
+    private profileService: ProfileService,
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {}
 
@@ -58,10 +70,11 @@ export class ProfileComponent implements OnInit {
       () => {
         console.log('Name updated successfully');
         this.isEditingName = false;
+        this.showSuccessAlert('Name updated successfully');
       },
       (error) => {
         console.error('Error updating name:', error);
-        // Handle error appropriately
+        this.showErrorAlert('Failed to update name');
       }
     );
   }
@@ -72,16 +85,30 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         () => {
           console.log('Password updated successfully');
-          // Reset the input fields and hide the change password section
           this.user_old_password = '';
           this.user_new_password = '';
           this.isChangingPassword = false;
+          this.showSuccessAlert('Password updated successfully');
         },
         (error) => {
           console.error('Error updating password:', error);
-          // Handle error appropriately
+          this.showErrorAlert('Failed to update password');
         }
       );
+  }
+
+  private showSuccessAlert(message: string) {
+    this._snackBar.open(message, 'Close', {
+      duration: 3000, // Duration in milliseconds
+      panelClass: ['success-snackbar'], // Custom CSS class for success alerts
+    });
+  }
+
+  private showErrorAlert(message: string) {
+    this._snackBar.open(message, 'Close', {
+      duration: 3000, // Duration in milliseconds
+      panelClass: ['error-snackbar'], // Custom CSS class for error alerts
+    });
   }
 
   getAvatarColor(): string {

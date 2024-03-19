@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../enviorment';
+// import { OfficeBuilding, Space } from './booking.component';
 
 export interface OfficeBuilding {
-  buildingId: number;
-  buildingName: string;
-  floors: Floor[];
+  officeId: number;
+  officeName: string;
 }
 
 export interface Floor {
   floorId: number;
   floorName: string;
-  spaces: {
-    [key: string]: Space[];
-  };
 }
 
 export interface Space {
@@ -23,6 +20,7 @@ export interface Space {
   roomId?: number;
   bookingId?: number;
   name: string;
+  type: string;
   status: string;
   booked?: boolean;
   bookingDate: Date;
@@ -36,16 +34,52 @@ export interface Space {
 })
 export class BookingService {
   apiUrl = environment.apiUrl;
+  token: string | null = localStorage.getItem('token');
+
   constructor(private http: HttpClient) {}
 
+  setToken(token: string): void {
+    this.token = token;
+    localStorage.setItem('token', token);
+  }
+
+  removeToken(): void {
+    this.token = null;
+    localStorage.removeItem('token');
+  }
+
+  private createHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+    if (this.token) {
+      headers = headers.set('Authorization', this.token);
+    }
+    return headers;
+  }
+
   getOfficeBuildings(): Observable<OfficeBuilding[]> {
-    return this.http.get<OfficeBuilding[]>('/offices');
+    return this.http.get<OfficeBuilding[]>(`${this.apiUrl}/offices`, {
+      headers: this.createHeaders(),
+    });
+  }
+
+  getFloorsForOffice(officeId: number): Observable<Floor[]> {
+    return this.http.get<Floor[]>(`${this.apiUrl}/floors/${officeId}`, {
+      headers: this.createHeaders(),
+    });
+  }
+
+  getSeatsForFloor(floorId: number): Observable<Space[]> {
+    return this.http.get<Space[]>(`${this.apiUrl}/seats/${floorId}`, {
+      headers: this.createHeaders(),
+    });
   }
 
   // Method to book a space
   bookSpace(spaceId: number): Observable<any> {
     // Assuming you have an API endpoint for booking a space
-    return this.http.post<any>(`/api/bookings/book/${spaceId}`, {});
+    return this.http.post<any>(`/api/bookings/book/${spaceId}`, {
+      headers: this.createHeaders(),
+    });
   }
 
   // Method to send a swap request
@@ -57,7 +91,9 @@ export class BookingService {
   // Method to retrieve bookings
   getBookings(): Observable<any> {
     // Assuming you have an API endpoint to fetch bookings
-    return this.http.get<any>('/api/bookings');
+    return this.http.get<any>(`${this.apiUrl}/user/bookings`, {
+      headers: this.createHeaders(),
+    });
   }
 
   // Method to retrieve swap requests
