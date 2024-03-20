@@ -1,14 +1,16 @@
 <div class="container" *ngIf="!isAdmin">
   <div class="booking-section-wrapper">
-    <h2>Booking Details</h2>
+    <h2 class="m-auto my-4">BOOKING DETAILS</h2>
     <div class="booking-section">
       <div class="booking-cards">
         <div class="booking-card" *ngFor="let booking of bookings | keyvalue">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-primary">
               Booking Details - Date: {{ booking.date }}
             </div>
-            <div class="card-body d-flex justify-content-around fw-medium">
+            <div
+              class="card-body bg-primary-subtle d-flex justify-content-around fw-medium"
+            >
               <p class="card-text">Date: {{ booking.date }}</p>
               <p class="card-text">Space: {{ booking.space }}</p>
               <p class="card-text">Status: {{ booking.status }}</p>
@@ -26,15 +28,18 @@
   </div>
 
   <div class="swap-section-wrapper">
-    <h2>Swap Requests</h2>
+    <h2 class="m-auto my-4">SWAP REQUESTS</h2>
     <div class="swap-section">
       <div class="swap-cards">
         <div class="swap-card" *ngFor="let swapRequest of swapRequests">
           <div class="card">
-            <div class="card-header">
-              SWAP Request from - {{ swapRequest.sender }}
+            <div class="card-header bg-warning">
+              SWAP Request from -
+              <span class="fw-bold">{{
+                swapRequest.sender.toUpperCase()
+              }}</span>
             </div>
-            <div class="card-body">
+            <div class="card-body bg-warning-subtle">
               <span class="d-flex justify-content-around fw-medium">
                 <p class="card-text">Seat ID: {{ swapRequest.seatId }}</p>
                 <p class="card-text">Office: {{ swapRequest.officeName }}</p>
@@ -44,9 +49,18 @@
                 <p class="card-text">Date: {{ swapRequest.date }}</p>
               </span>
               <span class="d-flex justify-content-around">
-                <p class="card-text">Seat Type: {{ swapRequest.space }}</p>
-                <p class="card-text">Start Time: {{ swapRequest.startTime }}</p>
-                <p class="card-text">End Time: {{ swapRequest.endTime }}</p>
+                <p class="card-text">
+                  Seat Type:
+                  <span class="fw-medium">{{ swapRequest.space }}</span>
+                </p>
+                <p class="card-text">
+                  Start Time:
+                  <span class="fw-medium">{{ swapRequest.startTime }}</span>
+                </p>
+                <p class="card-text">
+                  End Time:
+                  <span class="fw-medium">{{ swapRequest.endTime }}</span>
+                </p>
               </span>
               <span class="d-flex justify-content-around">
                 <button

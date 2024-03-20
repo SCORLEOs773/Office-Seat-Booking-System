@@ -16,7 +16,9 @@
           >
             {{ user.user_fullName.charAt(0).toUpperCase() }}
           </div>
-          <h2>{{ user.user_fullName }}</h2>
+          <h2 class="p-2" style="background-color: azure">
+            {{ user.user_fullName.toUpperCase() }}
+          </h2>
         </div>
         <div class="mb-3">
           <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
@@ -24,10 +26,10 @@
           <p class="text-center">{{ user.bio }}</p>
         </div>
         <div class="text-center">
-          <button class="btn btn-primary mr-2" (click)="toggleEditName()">
+          <button class="btn btn-primary mx-4 mr-2" (click)="toggleEditName()">
             Change Name
           </button>
-          <button class="btn btn-primary" (click)="toggleChangePassword()">
+          <button class="btn btn-primary mx-4" (click)="toggleChangePassword()">
             Change Password
           </button>
         </div>

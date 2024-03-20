@@ -18,6 +18,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { ProfileComponent } from './profile/profile.component';
 import { IMSComponent } from './ims/ims.component';
 import { ErrorComponent } from './error/error.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -35,6 +40,9 @@ import { ErrorComponent } from './error/error.component';
   ],
   imports: [
     BrowserModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
@@ -42,6 +50,8 @@ import { ErrorComponent } from './error/error.component';
     HttpClientModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatInputModule,
+    MatCardModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

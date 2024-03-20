@@ -2,8 +2,10 @@
   <div class="row justify-content-center mt-5">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header bg-primary text-white">User Registration</div>
-        <div class="card-body">
+        <div class="card-header bg-success text-white text-center">
+          REGISTER
+        </div>
+        <div class="card-body bg-success-subtle">
           <form (ngSubmit)="register()" [formGroup]="userForm" class="row">
             <!-- Username input -->
             <div class="col-md-6 my-3">
@@ -15,6 +17,7 @@
                   name="user_fullname"
                   class="form-control"
                   formControlName="user_fullname"
+                  placeholder="Enter your full name"
                 />
                 <div
                   *ngIf="
@@ -39,6 +42,7 @@
                   name="user_email"
                   class="form-control"
                   formControlName="user_email"
+                  placeholder="Enter your email address"
                 />
                 <div
                   *ngIf="
@@ -83,6 +87,7 @@
                   class="form-control"
                   formControlName="user_password"
                   [pattern]="passwordPattern"
+                  placeholder="Enter your password"
                 />
                 <div
                   *ngIf="
@@ -114,6 +119,7 @@
                   name="confirmPassword"
                   class="form-control"
                   formControlName="confirmPassword"
+                  placeholder="Re-enter your password"
                   [pattern]="passwordPattern"
                 />
                 <div
@@ -144,6 +150,7 @@
                   name="user_otp"
                   class="form-control"
                   formControlName="user_otp"
+                  placeholder="Enter OTP sent to your email"
                 />
               </div>
             </div>
@@ -151,9 +158,9 @@
             <!-- Submit and Reset buttons -->
             <div class="col-md-12 my-3">
               <button type="submit" class="btn btn-primary mx-3">
-                Register
+                REGISTER
               </button>
-              <button type="reset" class="btn btn-secondary">Reset</button>
+              <button type="reset" class="btn btn-secondary">RESET</button>
             </div>
           </form>
         </div>

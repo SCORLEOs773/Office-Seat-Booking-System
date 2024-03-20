@@ -2,8 +2,8 @@
   <div class="row justify-content-center mt-5">
     <div class="col-md-6">
       <div class="card">
-        <div class="card-header bg-primary text-white">Login</div>
-        <div class="card-body">
+        <div class="card-header bg-primary text-white text-center">LOGIN</div>
+        <div class="card-body bg-primary-subtle">
           <form (ngSubmit)="login()" [formGroup]="loginForm">
             <!-- Email input -->
             <div class="form-group my-3">
@@ -14,6 +14,7 @@
                 name="user_email"
                 class="form-control"
                 formControlName="user_email"
+                placeholder="Enter your mail"
               />
               <div
                 *ngIf="
@@ -41,6 +42,7 @@
                 name="user_password"
                 class="form-control"
                 formControlName="user_password"
+                placeholder="Enter your password"
               />
               <div
                 *ngIf="
@@ -55,7 +57,11 @@
             </div>
 
             <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block">
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              style="margin-left: 44%"
+            >
               Login
             </button>
           </form>
