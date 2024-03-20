@@ -8,11 +8,14 @@
             <div class="card-header">
               Booking Details - Date: {{ booking.date }}
             </div>
-            <div class="card-body">
+            <div class="card-body d-flex justify-content-around fw-medium">
               <p class="card-text">Date: {{ booking.date }}</p>
               <p class="card-text">Space: {{ booking.space }}</p>
               <p class="card-text">Status: {{ booking.status }}</p>
-              <button class="btn btn-danger" (click)="cancelBooking(booking)">
+              <button
+                class="btn btn-danger align-items-center"
+                (click)="cancelBooking(booking)"
+              >
                 Cancel Booking
               </button>
             </div>
@@ -32,20 +35,33 @@
               SWAP Request from - {{ swapRequest.sender }}
             </div>
             <div class="card-body">
-              <p class="card-text">Date: {{ swapRequest.date }}</p>
-              <p class="card-text">Status: {{ swapRequest.status }}</p>
-              <button
-                class="btn btn-success mx-2"
-                (click)="acceptSwapRequest(swapRequest)"
-              >
-                Accept
-              </button>
-              <button
-                class="btn btn-danger mx-2"
-                (click)="rejectSwapRequest(swapRequest)"
-              >
-                Reject
-              </button>
+              <span class="d-flex justify-content-around fw-medium">
+                <p class="card-text">Seat ID: {{ swapRequest.seatId }}</p>
+                <p class="card-text">Office: {{ swapRequest.officeName }}</p>
+              </span>
+              <span class="d-flex justify-content-around fw-medium">
+                <p class="card-text">Floor: {{ swapRequest.floorName }}</p>
+                <p class="card-text">Date: {{ swapRequest.date }}</p>
+              </span>
+              <span class="d-flex justify-content-around">
+                <p class="card-text">Seat Type: {{ swapRequest.space }}</p>
+                <p class="card-text">Start Time: {{ swapRequest.startTime }}</p>
+                <p class="card-text">End Time: {{ swapRequest.endTime }}</p>
+              </span>
+              <span class="d-flex justify-content-around">
+                <button
+                  class="btn btn-success mx-2"
+                  (click)="acceptSwapRequest(swapRequest)"
+                >
+                  Accept
+                </button>
+                <button
+                  class="btn btn-danger mx-2"
+                  (click)="rejectSwapRequest(swapRequest)"
+                >
+                  Reject
+                </button>
+              </span>
             </div>
           </div>
         </div>

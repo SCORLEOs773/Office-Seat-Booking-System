@@ -11,8 +11,12 @@ interface Booking {
 }
 
 interface SwapRequest {
-  id: number;
+  seatId: number;
   date: string;
+  officeName: string;
+  floorName: string;
+  startTime: string;
+  endTime: string;
   space: string;
   sender: string;
   // Add other swap request details as needed
@@ -45,8 +49,26 @@ export class DashboardComponent implements OnInit {
   // ];
   bookings: Booking[] = [];
   swapRequests: SwapRequest[] = [
-    { id: 1, space: 'Cubicle', date: '12', sender: 'James Salvador' },
-    { id: 2, space: 'Cubicle', date: '12', sender: 'Peaky Blinders' },
+    {
+      seatId: 1,
+      space: 'Cubicle',
+      officeName: 'MIS HQ',
+      floorName: '2nd Floor',
+      startTime: '01:00 pm',
+      endTime: '03:00 pm',
+      date: '24 March, 2024',
+      sender: 'Sukhad Sharma',
+    },
+    {
+      seatId: 2,
+      space: 'Office Seat',
+      officeName: 'Tech Hub',
+      floorName: '4th Floor',
+      startTime: '04:00 pm',
+      endTime: '05:00 pm',
+      date: '26 March 2024',
+      sender: 'Abhineet Kelley',
+    },
   ];
   pendingBookings: PendingBooking[] = [
     { id: 1, date: '16', space: 'Office Seat', status: 'Pending Approval' },
@@ -90,13 +112,13 @@ export class DashboardComponent implements OnInit {
   }
 
   acceptSwapRequest(swapRequest: SwapRequest): void {
-    this.bookingService.acceptSwapRequest(swapRequest.id).subscribe(() => {
+    this.bookingService.acceptSwapRequest(swapRequest.seatId).subscribe(() => {
       // You can update the UI or perform other actions here
     });
   }
 
   rejectSwapRequest(swapRequest: SwapRequest): void {
-    this.bookingService.rejectSwapRequest(swapRequest.id).subscribe(() => {
+    this.bookingService.rejectSwapRequest(swapRequest.seatId).subscribe(() => {
       // You can update the UI or perform other actions here
     });
   }
